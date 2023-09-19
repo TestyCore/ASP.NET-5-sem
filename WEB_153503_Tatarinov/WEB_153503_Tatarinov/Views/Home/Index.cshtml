@@ -1,19 +1,30 @@
-﻿@{
+﻿@model List<ListDemo>
+
+@{
   ViewBag.Title = "Index";
+  var selectList = new SelectList(Model, "Id", "Name");
 }
 
-<h1>Lab 1</h1>
+<h1>@ViewData["Header"]</h1>
 
 <h3>List</h3>
 
 <ol type="A">
-  <li>1 Element</li>
-  <li>2 Element</li>
+  @for (int item = 1; item <= 5; item++)
+  {
+    <li>@item.ToString() Element</li>
+  }
 </ol>
 
 <hr>
 
+
 <form method="POST">
+  
+  <div class="row mb-3">
+    <select id="DropdownName" name="DropdownName" class="form-control" asp-items="selectList">
+    </select>
+  </div>
   
   <div class="row mb-3">
     <div class="col-sm-10 offset-sm-2">

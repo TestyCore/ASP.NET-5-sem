@@ -6,26 +6,17 @@ namespace WEB_153503_Tatarinov.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        ViewData["Header"] = "Lab 2";
+        
+        var list = new List<ListDemo>
+        {
+            new ListDemo { Id = 1, Name = "Item 1" },
+            new ListDemo { Id = 2, Name = "Item 2" },
+            new ListDemo { Id = 3, Name = "Item 3" }
+        };
+        
+        return View(list);
     }
 }
