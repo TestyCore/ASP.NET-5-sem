@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153503_Tatarinov", "WEB_153503_Tatarinov\WEB_153503_Tatarinov.csproj", "{27C32749-434A-44BF-98E5-6EE67C68E4FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{27C32749-434A-44BF-98E5-6EE67C68E4FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27C32749-434A-44BF-98E5-6EE67C68E4FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27C32749-434A-44BF-98E5-6EE67C68E4FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27C32749-434A-44BF-98E5-6EE67C68E4FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
