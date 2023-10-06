@@ -1,7 +1,13 @@
+using WEB_153503_Tatarinov.Services.CategoryService;
+using WEB_153503_Tatarinov.Services.ProductService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
+builder.Services.AddScoped<IProductService, MemoryProductService>();
 
 var app = builder.Build();
 
