@@ -8,4 +8,7 @@
 
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+    <ItemGroup>
+      <ProjectReference Include="..\WEB_153503_Tatarinov.Domain\WEB_153503_Tatarinov.Domain.csproj" />
+    </ItemGroup>
 </Project>
