@@ -9,12 +9,11 @@
     var request = ViewContext.HttpContext.Request;
     var returnUrl = request.Path + request.QueryString.ToUriComponent();
     
+    int prev = Model.CurrentPage == 1 ? 1 : Model.CurrentPage - 1;
+    int next = Model.CurrentPage == Model.TotalPages ? Model.TotalPages : Model.CurrentPage + 1;
 }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-
+<h1>Сonfectionery</h1>
 <div class="row">
     
     <!-- Выбор категории -->
@@ -50,18 +49,50 @@
         </div>
         <!-- Выбор категории -->
     
-    @foreach (var item in Model.Items)
-    {
-        <div class="col-sm-6">
-            <div class="card">
-                <img src="@item.ImgPath" class="card-img-top" alt="@item.Name">
-                <div class="card-body">
-                    <h5 class="card-title">@item.Name</h5>
-                    <p class="card-text">@item.Description</p>
-                    <a href="#" class="btn btn-primary">Add to cart</a>
+        @foreach (var item in Model.Items)
+        {
+            <div class="col-md-3">
+                <div class="card mb-3">
+                    <img src="@item.ImgPath" class="card-img-top" alt="@item.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Name</h5>
+                        <p class="card-text">@item.Description</p>
+                        <a asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" asp-route-returnurl="@returnUrl"
+                                                   class="btn btn-primary">Add to cart</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+        @if (Model.TotalPages > 1)
+        {
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-controller="Product" asp-action="Index"
+                           asp-route-category="@(selectedCategory?.NormalizedName)"
+                           asp-route-pageNo="@prev">Prev</a>
+                    </li>
+
+
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                            <a class="page-link"
+                               asp-controller="Product" asp-action="Index"
+                               asp-route-category="@(selectedCategory?.NormalizedName)"
+                               asp-route-pageNo="@i">@i</a>
+                        </li>
+                    }
+
+                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-controller="Product" asp-action="Index"
+                           asp-route-category="@(selectedCategory?.NormalizedName)"
+                           asp-route-pageNo="@next">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        }
 </div>
 
