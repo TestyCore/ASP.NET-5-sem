@@ -1,0 +1,67 @@
+@model WEB_153503_Tatarinov.Domain.Models.ListModel<Product>
+
+@{
+    ViewData["Title"] = "Index";
+
+    var categories = ViewData["categories"] as List<Category>;
+    var selectedCategory = ViewData["selectedCategory"] as Category;
+    
+    var request = ViewContext.HttpContext.Request;
+    var returnUrl = request.Path + request.QueryString.ToUriComponent();
+    
+}
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div class="row">
+    
+    <!-- Выбор категории -->
+        <div class="col-2">
+            <ul class="nav ">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       data-bs-toggle="dropdown"
+                       href="#"
+                       role="button"
+                       aria-expanded="false">@(selectedCategory?.Name ?? "ALL")
+                    </a>
+    
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="product"
+                               asp-route-category=@null>All</a>
+                        </li>
+                        @foreach (var item in categories!)
+                        {
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="product"
+                                   asp-route-category="@item.NormalizedName">
+                                    @item.Name
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- Выбор категории -->
+    
+    @foreach (var item in Model.Items)
+    {
+        <div class="col-sm-6">
+            <div class="card">
+                <img src="@item.ImgPath" class="card-img-top" alt="@item.Name">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Description</p>
+                    <a href="#" class="btn btn-primary">Add to cart</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
