@@ -1,124 +1,98 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WEB_153503_Tatarinov.API.Data;
+using WEB_153503_Tatarinov.API.Services.ProductService;
 using WEB_153503_Tatarinov.Domain.Entities;
+using WEB_153503_Tatarinov.Domain.Models;
 
-namespace WEB_153503_Tatarinov.API.Controllers
-{
+namespace WEB_153503_Tatarinov.API.Controllers;
+
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+public class ProductController : ControllerBase
+{
+    private readonly AppDbContext _context;
+    private readonly IProductService _productService;
+
+    public ProductController(AppDbContext context, IProductService productService)
     {
-        private readonly AppDbContext _context;
+        _context = context;
+        _productService = productService;
+    }
 
-        public ProductController(AppDbContext context)
+     // GET: api/Products
+    [HttpGet("{pageNo:int}")]
+    [HttpGet("{category?}/{pageNo:int?}/")]
+    public async Task<ActionResult<ResponseData<List<Product>>>> GetProducts(string? category, int pageNo = 1, int pageSize = 3)
+    {
+        var result = await _productService.GetProductListAsync(category, pageNo, pageSize);
+        return result.Success ? Ok(result) : BadRequest(result);
+    }
+
+    // GET: api/Products/product5
+    [HttpGet("product{id}")]
+    public async Task<ActionResult<ResponseData<Product>>> GetProduct(int id)
+    {
+        var result = await _productService.GetProductByIdAsync(id);
+        return result.Success ? Ok(result) : NotFound(result);
+    }
+
+    // PUT: api/Products/5
+ 
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ResponseData<Product>>> PutProduct(int id, Product product)
+    {
+        try
         {
-            _context = context;
+            await _productService.UpdateProductAsync(id, product);
         }
-
-        // GET: api/Product
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        catch (Exception ex)
         {
-          if (_context.Products == null)
-          {
-              return NotFound();
-          }
-            return await _context.Products.ToListAsync();
-        }
-
-        // GET: api/Product/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
-        {
-          if (_context.Products == null)
-          {
-              return NotFound();
-          }
-            var product = await _context.Products.FindAsync(id);
-
-            if (product == null)
+            return NotFound(new ResponseData<Product>()
             {
-                return NotFound();
-            }
-
-            return product;
+                Data = null,
+                Success = false,
+                ErrorMessage = ex.Message
+            });
         }
 
-        // PUT: api/Product/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(int id, Product product)
+        return Ok(new ResponseData<Product>()
         {
-            if (id != product.Id)
-            {
-                return BadRequest();
-            }
+            Data = product,
+        });
+    }
 
-            _context.Entry(product).State = EntityState.Modified;
+    // POST: api/Products
+    [HttpPost]
+    public async Task<ActionResult<ResponseData<Product>>> PostProduct(Product product)
+    {
+        var result = await _productService.CreateProductAsync(product);
+        return result.Success ? Ok(result.Data) : BadRequest(result);
+    }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Product
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+    // DELETE: api/Products/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteProduct(int id)
+    {
+        try
         {
-          if (_context.Products == null)
-          {
-              return Problem("Entity set 'AppDbContext.Products'  is null.");
-          }
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            await _productService.DeleteProductAsync(id);
         }
-
-        // DELETE: api/Product/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        catch (Exception ex)
         {
-            if (_context.Products == null)
+            return NotFound(new ResponseData<Product>()
             {
-                return NotFound();
-            }
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+                Data = null,
+                Success = false,
+                ErrorMessage = ex.Message
+            });
         }
 
-        private bool ProductExists(int id)
-        {
-            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        return NoContent();
+    }
+
+    private async Task<bool> ProductExists(int id)
+    {
+        return (await _productService.GetProductByIdAsync(id)).Success;
     }
 }
+

@@ -25,7 +25,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\WEB_153503_Tatarinov.Domain\WEB_153503_Tatarinov.Domain.csproj" />
+
     </ItemGroup>
+
 
 
 
