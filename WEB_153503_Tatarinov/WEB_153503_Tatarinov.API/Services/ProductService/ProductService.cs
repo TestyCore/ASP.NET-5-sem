@@ -29,6 +29,7 @@ public class ProductService : IProductService
         query = query
             .Where(d=> categoryNormalizedName==null
                        || d.Category.NormalizedName.Equals(categoryNormalizedName));
+        ;
         var count = await query.CountAsync();
         if(count==0)
         {

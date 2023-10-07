@@ -21,7 +21,7 @@ public class ProductController : ControllerBase
 
      // GET: api/Products
     [HttpGet("{pageNo:int}")]
-    [HttpGet("{category?}/{pageNo:int?}/")]
+    [HttpGet("{category?}/{pageNo:int?}")]
     public async Task<ActionResult<ResponseData<List<Product>>>> GetProducts(string? category, int pageNo = 1, int pageSize = 3)
     {
         var result = await _productService.GetProductListAsync(category, pageNo, pageSize);
