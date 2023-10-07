@@ -6,8 +6,8 @@ namespace WEB_153503_Tatarinov.Controllers;
 
 public class ProductController : Controller
 {
-    private IProductService _productService;
-    private ICategoryService _categoryService;
+    private readonly IProductService _productService;
+    private readonly ICategoryService _categoryService;
 
     public ProductController(IProductService productService, ICategoryService categoryService)
     {
