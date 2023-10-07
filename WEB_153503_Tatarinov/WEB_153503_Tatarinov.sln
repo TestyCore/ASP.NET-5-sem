@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153503_Tatarinov", "WEB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153503_Tatarinov.Domain", "WEB_153503_Tatarinov.Domain\WEB_153503_Tatarinov.Domain.csproj", "{B6D87FFE-6F1E-43B9-8487-FFB5E5709D96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153503_Tatarinov.API", "WEB_153503_Tatarinov.API\WEB_153503_Tatarinov.API.csproj", "{D9B0A3B7-766C-430B-95D6-5F81972A9591}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{B6D87FFE-6F1E-43B9-8487-FFB5E5709D96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6D87FFE-6F1E-43B9-8487-FFB5E5709D96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6D87FFE-6F1E-43B9-8487-FFB5E5709D96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9B0A3B7-766C-430B-95D6-5F81972A9591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9B0A3B7-766C-430B-95D6-5F81972A9591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9B0A3B7-766C-430B-95D6-5F81972A9591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9B0A3B7-766C-430B-95D6-5F81972A9591}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

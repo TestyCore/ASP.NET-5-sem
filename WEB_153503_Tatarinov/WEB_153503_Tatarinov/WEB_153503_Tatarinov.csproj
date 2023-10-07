@@ -20,4 +20,7 @@
     <ItemGroup>
       <AdditionalFiles Include="Views\Shared\Components\Cart\Default.cshtml" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="wwwroot\images\" />
+    </ItemGroup>
 </Project>
