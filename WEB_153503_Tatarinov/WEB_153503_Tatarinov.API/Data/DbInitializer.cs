@@ -30,6 +30,7 @@ public class DbInitializer
                 Description="Elegantly rustic in plush white buttercream.",
                 Price = 98,
                 ImgPath= $"{imageRoot}/clouds_posies_cake.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("cakes"))
             },
             new Product() {
@@ -37,6 +38,7 @@ public class DbInitializer
                 Description="Our classic chocolate cake.",
                 Price = 98,
                 ImgPath= $"{imageRoot}/chocolate_frida_cake.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("cakes"))
             },
             new Product() {
@@ -44,6 +46,7 @@ public class DbInitializer
                 Description="Our classic chocolate cake.",
                 Price = 98,
                 ImgPath= $"{imageRoot}/roses_roses_cake.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("cakes"))
             },
             new Product() {
@@ -51,6 +54,7 @@ public class DbInitializer
                 Description="The right amount of sweetness.",
                 Price = 108,
                 ImgPath= $"{imageRoot}/pink_champagne_cake.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("cakes"))
             },
             new Product() {
@@ -58,6 +62,7 @@ public class DbInitializer
                 Description="This cake brings a smile to all ages!",
                 Price = 98,
                 ImgPath= $"{imageRoot}/super_sprinkles_cake.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("cakes"))
             },
             new Product() {
@@ -65,6 +70,7 @@ public class DbInitializer
                 Description="Adorned with a simple, striking deep.",
                 Price = 108,
                 ImgPath= $"{imageRoot}/gold_foiled_cake.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("cakes"))
             },
             new Product() {
@@ -72,6 +78,7 @@ public class DbInitializer
                 Description="Covering layers of fresh delicious cake.",
                 Price = 98,
                 ImgPath= $"{imageRoot}/geo_prism_cake.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("cakes"))
             },
             new Product() {
@@ -79,6 +86,7 @@ public class DbInitializer
                 Description="Fully finished dense ring cake.",
                 Price = 3,
                 ImgPath= $"{imageRoot}/plain_ring.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("donuts"))
             },
             new Product() {
@@ -86,6 +94,7 @@ public class DbInitializer
                 Description="Fully finished small powdered sugar.",
                 Price = 5,
                 ImgPath= $"{imageRoot}/mini_ring.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("donuts"))
             },
             new Product() {
@@ -93,6 +102,7 @@ public class DbInitializer
                 Description="Fully finished yeast donut rolled.",
                 Price = 4,
                 ImgPath= $"{imageRoot}/roll_donuts.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("donuts"))
             },
             new Product() {
@@ -100,6 +110,7 @@ public class DbInitializer
                 Description="Fully finished yeast dough.",
                 Price = 6,
                 ImgPath= $"{imageRoot}/fritter_donuts.png",
+                ImgMimeType = "img/png",
                 Category= await context.Categories.SingleAsync(c => c.NormalizedName.Equals("donuts"))
             },
         });
