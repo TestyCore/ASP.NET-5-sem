@@ -10,12 +10,10 @@ namespace WEB_153503_Tatarinov.API.Controllers;
     [ApiController]
 public class ProductController : ControllerBase
 {
-    private readonly AppDbContext _context;
     private readonly IProductService _productService;
 
-    public ProductController(AppDbContext context, IProductService productService)
+    public ProductController(IProductService productService)
     {
-        _context = context;
         _productService = productService;
     }
 
@@ -66,7 +64,7 @@ public class ProductController : ControllerBase
     public async Task<ActionResult<ResponseData<Product>>> PostProduct(Product product)
     {
         var result = await _productService.CreateProductAsync(product);
-        return result.Success ? Ok(result.Data) : BadRequest(result);
+        return result.Success ? Ok(result) : BadRequest(result);
     }
 
     // DELETE: api/Products/5
@@ -90,6 +88,21 @@ public class ProductController : ControllerBase
         return NoContent();
     }
 
+    
+    // POST: api/Products/5
+    [HttpPost("{id}")]
+    public async Task<ActionResult<ResponseData<string>>> PostImage(int id, IFormFile formFile)
+    {
+        var response = await _productService.SaveImageAsync(id, formFile);
+        
+        if (response.Success)
+        {
+            return Ok(response);
+        }
+        
+        return NotFound(response);
+    }
+    
     private async Task<bool> ProductExists(int id)
     {
         return (await _productService.GetProductByIdAsync(id)).Success;

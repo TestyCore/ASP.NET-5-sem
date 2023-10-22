@@ -75,17 +75,15 @@ public class ApiProductService : IProductService
     {
         var uri = new Uri(_httpClient.BaseAddress.AbsoluteUri + "Product");
 
-        var response = await _httpClient.PostAsJsonAsync(
-            uri,
-            product,
-            _serializerOptions);
+        var response = await _httpClient.PostAsJsonAsync(uri, product, _serializerOptions);
         if (response.IsSuccessStatusCode)
         {
-            var data = await response
-                .Content
-                .ReadFromJsonAsync<ResponseData<Product>>
-                    (_serializerOptions);
-
+            var data = await response.Content.ReadFromJsonAsync<ResponseData<Product>>(_serializerOptions);
+            var content = await response.Content.ReadAsStringAsync();
+            if (formFile != null)
+            {
+                await SaveImageAsync(data!.Data!.Id, formFile);
+            }
             return data; // product;
         }
         _logger

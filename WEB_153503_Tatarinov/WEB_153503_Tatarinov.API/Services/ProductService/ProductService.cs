@@ -10,11 +10,17 @@ public class ProductService : IProductService
     private readonly int _maxPageSize = 20;
     private readonly AppDbContext _dbContext;
     private readonly IConfiguration _configuration;
+    
+    private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public ProductService(AppDbContext dbContext, IConfiguration configuration)
+    public ProductService(AppDbContext dbContext, IConfiguration configuration,
+        IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
     {
         _dbContext = dbContext;
         _configuration = configuration;
+        _webHostEnvironment = webHostEnvironment;
+        _httpContextAccessor = httpContextAccessor;
     }
     
     public async Task<ResponseData<ListModel<Product>>> GetProductListAsync(
@@ -108,41 +114,7 @@ public class ProductService : IProductService
         _dbContext.Products.Remove(tool);
         await _dbContext.SaveChangesAsync();
     }
-
     
-
-    public async Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
-    {
-        var tool = await _dbContext.Products.FindAsync(id);
-        if (tool is null)
-        {
-            return new ResponseData<string>
-            {
-                Success = false,
-                ErrorMessage = "Product was not found"
-            };
-        }
-
-        string imageRoot = Path.Combine(_configuration["AppUrl"]!, "images");
-        string uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
-        
-        string imagePath = Path.Combine(imageRoot, uniqueFileName);
-
-        using (var stream = new FileStream(imagePath, FileMode.Create))
-        {
-            await formFile.CopyToAsync(stream);
-        }
-
-        tool.ImgPath = imagePath;
-        await _dbContext.SaveChangesAsync();
-
-        return new ResponseData<string>
-        {
-            Data = tool.ImgPath,
-            Success = true
-        };
-
-    }
 
     public async Task UpdateProductAsync(int id, Product tool)
     {
@@ -159,5 +131,46 @@ public class ProductService : IProductService
         oldProduct.Category = tool.Category;
 
         await _dbContext.SaveChangesAsync();
+    }
+    
+    
+    public async Task<ResponseData<string>> SaveImageAsync(int id, IFormFile formFile)
+    {
+        var responseData = new ResponseData<string>();
+        var product = await _dbContext.Products.FindAsync(id);
+        if (product == null)
+        {
+            responseData.Success = false;
+            responseData.ErrorMessage = "No item found";
+            return responseData;
+        }
+        var host = "https://" + _httpContextAccessor.HttpContext?.Request.Host;
+        var imageFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+
+        if (formFile != null)
+        {
+            if (!string.IsNullOrEmpty(product.ImgPath))
+            {
+                var prevImage = Path.GetFileName(product.ImgPath);
+                var prevImagePath = Path.Combine(imageFolder, prevImage);
+                if (File.Exists(prevImagePath))
+                {
+                    File.Delete(prevImagePath);
+                }
+            }
+            var ext = Path.GetExtension(formFile.FileName);
+            var fName = Path.ChangeExtension(Path.GetRandomFileName(), ext);
+            var filePath = Path.Combine(imageFolder, fName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await formFile.CopyToAsync(stream);
+            }
+
+            product.ImgPath = $"{host}/images/{fName}";
+            await _dbContext.SaveChangesAsync();
+        }
+        responseData.Data = product.ImgPath;
+        
+        return responseData;
     }
 }
