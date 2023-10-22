@@ -12,6 +12,10 @@
       <ProjectReference Include="..\WEB_153503_Tatarinov.Domain\WEB_153503_Tatarinov.Domain.csproj" />
     </ItemGroup>
     <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.12">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.10" />
     </ItemGroup>
     <ItemGroup>
@@ -19,8 +23,5 @@
     </ItemGroup>
     <ItemGroup>
       <AdditionalFiles Include="Views\Shared\Components\Cart\Default.cshtml" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="wwwroot\images\" />
     </ItemGroup>
 </Project>

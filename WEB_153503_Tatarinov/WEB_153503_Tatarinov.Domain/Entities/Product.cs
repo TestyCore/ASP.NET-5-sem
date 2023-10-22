@@ -12,8 +12,8 @@ public class Product
     public int CategoryId { get; set; }
     
     public float Price { get; set; }
-    public string ImgPath { get; set; }
+    public string? ImgPath { get; set; }
     public string ImgMimeType { get; set; }
     
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
 }
