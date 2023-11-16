@@ -1,5 +1,7 @@
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication;
 using WEB_153503_Tatarinov.Domain.Entities;
 using WEB_153503_Tatarinov.Domain.Models;
 
@@ -8,21 +10,31 @@ namespace WEB_153503_Tatarinov.Services.ProductService;
 public class ApiProductService : IProductService
 {
     private HttpClient _httpClient;
+    private readonly HttpContext _httpContext;
     private string? _pageSize;
     private readonly JsonSerializerOptions _serializerOptions;
     private readonly ILogger<ApiProductService> _logger;
+   
     
-    public ApiProductService(HttpClient httpClient,
-        IConfiguration configuration,
-        ILogger<ApiProductService> logger)
+    public ApiProductService(HttpClient httpClient, IHttpContextAccessor httpContext, IConfiguration configuration, ILogger<ApiProductService> logger)
     {
         _httpClient = httpClient;
+        _httpContext = httpContext.HttpContext;
         _pageSize = configuration.GetSection("ItemsPerPage").Value;
         _serializerOptions = new JsonSerializerOptions()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
         _logger = logger;
+
+        SetJwtToken();
+    }
+    
+    private async Task SetJwtToken()
+    {
+        var token = await _httpContext.GetTokenAsync("access_token");
+        _httpClient.DefaultRequestHeaders
+            .Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
     
     public async Task<ResponseData<ListModel<Product>>> GetProductListAsync(string? categoryNormalizedName, int pageNo = 1)
@@ -135,10 +147,10 @@ public class ApiProductService : IProductService
     }
 
     
-    public async Task UpdateProductAsync(int id, Product tool, IFormFile? formFile)
+    public async Task UpdateProductAsync(int id, Product product, IFormFile? formFile)
     {
         var uri = new Uri(_httpClient.BaseAddress!.AbsoluteUri + "Product/" + id);
-        var response = await _httpClient.PutAsJsonAsync(uri, tool, _serializerOptions);
+        var response = await _httpClient.PutAsJsonAsync(uri, product, _serializerOptions);
 
         if (!response.IsSuccessStatusCode)
         {

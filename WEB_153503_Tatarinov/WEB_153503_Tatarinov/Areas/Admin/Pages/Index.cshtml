@@ -12,27 +12,27 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Products[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Products[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Products[0].Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Products[0].ImgPath)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Products[0].Category)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Products[0].Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Products[0].Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Products[0].Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Products[0].ImgPath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Products[0].Category)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Products) {
+    @foreach (var item in Model.Products) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -55,6 +55,10 @@
                 <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+<Pager current-page="@Model.CurrentPage"
+       total-pages="@Model.TotalPages"
+       admin="true"></Pager>

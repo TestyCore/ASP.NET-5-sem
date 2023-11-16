@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153503_Tatarinov.Domain
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153503_Tatarinov.API", "WEB_153503_Tatarinov.API\WEB_153503_Tatarinov.API.csproj", "{D9B0A3B7-766C-430B-95D6-5F81972A9591}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WEB_153503_Tatarinov.IdentityServer", "WEB_153503_Tatarinov.IdentityServer\WEB_153503_Tatarinov.IdentityServer.csproj", "{11CA5557-6C90-4FC7-86D5-15766CFDC87E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{D9B0A3B7-766C-430B-95D6-5F81972A9591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9B0A3B7-766C-430B-95D6-5F81972A9591}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9B0A3B7-766C-430B-95D6-5F81972A9591}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11CA5557-6C90-4FC7-86D5-15766CFDC87E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11CA5557-6C90-4FC7-86D5-15766CFDC87E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11CA5557-6C90-4FC7-86D5-15766CFDC87E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11CA5557-6C90-4FC7-86D5-15766CFDC87E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

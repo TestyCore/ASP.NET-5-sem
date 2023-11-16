@@ -17,82 +17,56 @@
 <div class="row">
     
     <!-- Выбор категории -->
-        <div class="col-2">
-            <ul class="nav ">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"
-                       data-bs-toggle="dropdown"
-                       href="#"
-                       role="button"
-                       aria-expanded="false">@(selectedCategory?.Name ?? "ALL")
-                    </a>
+    <div class="col-2">
+        <ul class="nav ">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   data-bs-toggle="dropdown"
+                   href="#"
+                   role="button"
+                   aria-expanded="false">@(selectedCategory?.Name ?? "ALL")
+                </a>
     
-                    <ul class="dropdown-menu">
+                <ul class="dropdown-menu">
+                    <li>
+                        <a class="dropdown-item"
+                           asp-controller="product"
+                           asp-route-category=@null>All</a>
+                    </li>
+                    @foreach (var item in categories!)
+                    {
                         <li>
                             <a class="dropdown-item"
                                asp-controller="product"
-                               asp-route-category=@null>All</a>
-                        </li>
-                        @foreach (var item in categories!)
-                        {
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-controller="product"
-                                   asp-route-category="@item.NormalizedName">
-                                    @item.Name
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </li>
-            </ul>
-        </div>
-        <!-- Выбор категории -->
-    
-        @foreach (var item in Model.Items)
-        {
-            <div class="col-md-3">
-                <div class="card mb-3">
-                    <img src="@item.ImgPath" class="card-img-top" alt="@item.Name">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Name</h5>
-                        <p class="card-text">@item.Description</p>
-                        <a asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" asp-route-returnurl="@returnUrl"
-                                                   class="btn btn-primary">Add to cart</a>
-                    </div>
-                </div>
-            </div>
-        }
-        @if (Model.TotalPages > 1)
-        {
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                        <a class="page-link"
-                           asp-controller="Product" asp-action="Index"
-                           asp-route-category="@(selectedCategory?.NormalizedName)"
-                           asp-route-pageNo="@prev">Prev</a>
-                    </li>
-
-
-                    @for (int i = 1; i <= Model.TotalPages; i++)
-                    {
-                        <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
-                            <a class="page-link"
-                               asp-controller="Product" asp-action="Index"
-                               asp-route-category="@(selectedCategory?.NormalizedName)"
-                               asp-route-pageNo="@i">@i</a>
+                               asp-route-category="@item.NormalizedName">
+                                @item.Name
+                            </a>
                         </li>
                     }
-
-                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
-                        <a class="page-link"
-                           asp-controller="Product" asp-action="Index"
-                           asp-route-category="@(selectedCategory?.NormalizedName)"
-                           asp-route-pageNo="@next">Next</a>
-                    </li>
                 </ul>
-            </nav>
-        }
+            </li>
+        </ul>
+    </div>
+    <!-- Выбор категории -->
+    
+    <div id="output" class="row">
+        <partial name="_ProductPartial"
+                 model="new { Model.Items, Model.CurrentPage, Model.TotalPages, 
+    CategoryNormalizedName = selectedCategory?.NormalizedName }" />
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $('#output').on('click', '.page-link', function (event) {
+                event.preventDefault();
+                let url = $(this).attr('href');
+                $('#output').load(url);
+                history.pushState(null, null, url);
+            });
+        });
+    </script>
+}
+
 

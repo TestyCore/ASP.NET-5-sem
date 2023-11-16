@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WEB_153503_Tatarinov.API.Data;
 using WEB_153503_Tatarinov.API.Services.ProductService;
@@ -8,6 +9,7 @@ namespace WEB_153503_Tatarinov.API.Controllers;
 
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
 public class ProductController : ControllerBase
 {
     private readonly IProductService _productService;
@@ -18,6 +20,7 @@ public class ProductController : ControllerBase
     }
 
      // GET: api/Products
+     [AllowAnonymous]
     [HttpGet("{pageNo:int}")]
     [HttpGet("{category?}/{pageNo:int?}")]
     public async Task<ActionResult<ResponseData<List<Product>>>> GetProducts(string? category, int pageNo = 1, int pageSize = 3)
@@ -27,6 +30,7 @@ public class ProductController : ControllerBase
     }
 
     // GET: api/Products/product5
+    [AllowAnonymous]
     [HttpGet("product{id}")]
     public async Task<ActionResult<ResponseData<Product>>> GetProduct(int id)
     {
@@ -35,7 +39,7 @@ public class ProductController : ControllerBase
     }
 
     // PUT: api/Products/5
- 
+    // [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult<ResponseData<Product>>> PutProduct(int id, Product product)
     {
@@ -58,8 +62,9 @@ public class ProductController : ControllerBase
             Data = product,
         });
     }
-
+    
     // POST: api/Products
+    // [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<ResponseData<Product>>> PostProduct(Product product)
     {
@@ -68,6 +73,7 @@ public class ProductController : ControllerBase
     }
 
     // DELETE: api/Products/5
+    // [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
@@ -90,6 +96,7 @@ public class ProductController : ControllerBase
 
     
     // POST: api/Products/5
+    // [Authorize(Roles = "Admin")]
     [HttpPost("{id}")]
     public async Task<ActionResult<ResponseData<string>>> PostImage(int id, IFormFile formFile)
     {

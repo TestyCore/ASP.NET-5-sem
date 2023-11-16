@@ -6,5 +6,8 @@
 <div class="navbar-nav">
     <a asp-controller="Home" asp-action="Index" class="nav-item nav-link @(controller=="home"?"active":"")">Lab_1</a>
     <a asp-controller="Product" asp-action="Index" class="nav-item nav-link @(controller=="product"?"active":"")">Catalog</a>
-    <a asp-area="Admin" asp-page="/Index" class="nav-item nav-link">Administration</a>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a class="nav-item nav-link" asp-area="Admin" asp-page="/Index">Administration</a>
+    }
 </div>

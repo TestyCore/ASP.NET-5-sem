@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+using WEB_153503_Tatarinov.Domain.Entities;
+using WEB_153503_Tatarinov.Domain.Models;
 using WEB_153503_Tatarinov.Services.CategoryService;
 using WEB_153503_Tatarinov.Services.ProductService;
+using WEB_153503_Tatarinov.Extensions;
 
 namespace WEB_153503_Tatarinov.Controllers;
 
@@ -24,10 +27,24 @@ public class ProductController : Controller
         ViewData["categories"] = categoryResponse.Data;
         ViewData["selectedCategory"] = categoryResponse.Data?.SingleOrDefault(c => c.NormalizedName == category);
         
-        var productResponce = await _productService.GetProductListAsync(category, pageNo);
-        if (!productResponce.Success)
-            return NotFound(productResponce.ErrorMessage);
+        var productResponse = await _productService.GetProductListAsync(category, pageNo);
+        if (!productResponse.Success)
+            return NotFound(productResponse.ErrorMessage);
 
-        return View(productResponce.Data);
+        if (Request.IsAjaxRequest())
+        {
+            ListModel<Product> data = productResponse.Data!;
+            return PartialView("_ProductPartial", new
+            {
+                data.Items,
+                data.CurrentPage,
+                data.TotalPages,
+                CategoryNormalizedName = category
+            });
+        }
+        else
+        {
+            return View(productResponse.Data); 
+        }
     }
 }

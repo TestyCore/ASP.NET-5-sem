@@ -1,12 +1,17 @@
 using WEB_153503_Tatarinov.Models;
 using WEB_153503_Tatarinov.Services.CategoryService;
 using WEB_153503_Tatarinov.Services.ProductService;
+using Microsoft.AspNetCore.Authentication;
+using NuGet.Packaging;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddHttpContextAccessor();
 
 UriData uriData = builder.Configuration.GetSection("UriData").Get<UriData>()!;
 
@@ -18,8 +23,28 @@ builder.Services
     .AddHttpClient<ICategoryService, ApiCategoryService>(opt=>
         opt.BaseAddress=new Uri(uriData.ApiUri));
 
-//builder.Services.AddScoped<ICategoryService, MemoryCategoryService>();
-//builder.Services.AddScoped<IProductService, MemoryProductService>();
+
+builder.Services.AddAuthentication(opt =>
+    {
+        opt.DefaultScheme = "cookie";
+        opt.DefaultChallengeScheme = "oidc";
+    })
+    .AddCookie("cookie")
+    .AddOpenIdConnect("oidc", options =>
+    {
+        options.Authority =
+            builder.Configuration["InteractiveServiceSettings:AuthorityUrl"];
+        options.ClientId =
+            builder.Configuration["InteractiveServiceSettings:ClientId"];
+        options.ClientSecret =
+            builder.Configuration["InteractiveServiceSettings:ClientSecret"];
+        // Получить Claims пользователя
+        options.GetClaimsFromUserInfoEndpoint = true;
+        options.ResponseType = "code";
+        options.ResponseMode = "query";
+        options.SaveTokens = true;
+    });
+
 
 var app = builder.Build();
 
@@ -35,7 +60,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.MapRazorPages().RequireAuthorization();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

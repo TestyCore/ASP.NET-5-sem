@@ -1,0 +1,23 @@
+@{
+    var request = ViewContext.HttpContext.Request;
+    var returnUrl = request.Path + request.QueryString.ToUriComponent();
+}
+
+@foreach (var item in Model.Items)
+{
+    <div class="col-md-3">
+        <div class="card mb-3">
+            <img src="@item.ImgPath" class="card-img-top" alt="@item.Name">
+            <div class="card-body">
+                <h5 class="card-title">@item.Name</h5>
+                <p class="card-text">@item.Description</p>
+                <a asp-controller="Cart" asp-action="Add" asp-route-id="@item.Id" asp-route-returnurl="@returnUrl"
+                   class="btn btn-primary">Add to cart</a>
+            </div>
+        </div>
+    </div>
+}
+<Pager current-page="@Model.CurrentPage"
+       total-pages="@Model.TotalPages"
+       category="@(Model.CategoryNormalizedName)">
+</Pager>

@@ -30,7 +30,7 @@ namespace WEB_153503_Tatarinov.Areas.Admin.Pages
             
             Products = response.Data?.Items!;
             CurrentPage = response.Data?.CurrentPage ?? 0;
-            CurrentPage = response.Data?.TotalPages ?? 0;
+            TotalPages = response.Data?.TotalPages ?? 0;
 
             return Page();
         }
